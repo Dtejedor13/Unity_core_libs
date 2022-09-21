@@ -6,3 +6,5 @@
 
 ### Third Person Libary
 >
+#### Requirements
+- Cinemachine
