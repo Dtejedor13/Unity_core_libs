@@ -83,3 +83,15 @@ RTS Libary/.vs/
 RTS Libary/*.pidb.meta
 RTS Libary/*.pdb.meta
 RTS Libary/*.mdb.meta
+
+Third Person Libary/Library/
+Third Person Libary/Temp/
+Third Person Libary/Obj/
+Third Person Libary/Build/
+Third Person Libary/Builds/
+Third Person Libary/Logs/
+Third Person Libary/UserSettings/
+Third Person Libary/.vs/
+Third Person Libary/*.pidb.meta
+Third Person Libary/*.pdb.meta
+Third Person Libary/*.mdb.meta
