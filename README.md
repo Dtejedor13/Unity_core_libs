@@ -10,6 +10,6 @@
 >- RTS Ai setup (navmesh agents for player units as well as ai for enemy with thread based target system)
 
 ### Third Person Libary
->
-##### Requirements
-- Cinemachine
+> This libary contains basic functionality for third person games as well as third person shooter.
+>##### Requirements
+>- Cinemachine
