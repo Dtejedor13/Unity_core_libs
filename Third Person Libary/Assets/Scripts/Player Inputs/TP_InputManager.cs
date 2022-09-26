@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class TP_InputManager : MonoBehaviour
 {
-    public bool JumpButtonIsPressed { get; private set; }
+    public bool JumpAction { get; private set; } = false;
+    public bool IsCrouching { get; private set; } = false;
+    public bool IsSprinting { get; private set; } = false;
+
     public Vector2 MovementInput { get; private set; } = Vector2.zero;
+
     public float VerticalInput => MovementInput.y;
     public float HorizontalInput => MovementInput.x;
 
@@ -15,7 +19,11 @@ public class TP_InputManager : MonoBehaviour
         {
             playerInputs = new PlayerInputs();
             playerInputs.Movement.Movement.performed += x => MovementInput = x.ReadValue<Vector2>();
-            playerInputs.Movement.Jump.performed += x => JumpButtonIsPressed = x.ReadValue<bool>();
+            playerInputs.Movement.Jump.performed += x => JumpAction = true;
+            playerInputs.Movement.Jump.canceled += x => JumpAction = false;
+            playerInputs.Movement.Sprint.performed += x => IsSprinting = true;
+            playerInputs.Movement.Sprint.canceled += x => IsSprinting = false;
+            playerInputs.Movement.Crouch.performed += x => IsCrouching = !IsCrouching;
         }
 
         playerInputs.Enable();
@@ -25,4 +33,5 @@ public class TP_InputManager : MonoBehaviour
     {
         playerInputs.Disable();
     }
+
 }

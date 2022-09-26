@@ -16,12 +16,30 @@
                 },
                 {
                     "name": "Jump",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "e8da39d2-6839-4455-9bc2-ce1efbae612e",
-                    "expectedControlType": "Analog",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Sprint",
+                    "type": "PassThrough",
+                    "id": "fdc78e0d-db2e-4b8b-bbc9-d3a1ce73fbe4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch",
+                    "type": "PassThrough",
+                    "id": "654ab941-0003-4a26-984c-b6a12f8abfd9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -136,37 +154,70 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Button Is Pressed",
-                    "id": "9bb3e42a-983b-42b3-9cbf-0b244930133a",
-                    "path": "1DAxis",
+                    "name": "",
+                    "id": "5bcb0544-c2b7-44f2-b189-50d97a2cc014",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "5ac35225-9a02-4bcd-9a86-13ec12af9638",
+                    "name": "",
+                    "id": "9c3a6183-07f3-447c-a2e6-fe2d8e5dd4a0",
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
-                    "name": "positive",
-                    "id": "f2fe0e30-8dba-4ca9-82ba-b661ec2c0300",
-                    "path": "<Gamepad>/buttonWest",
+                    "name": "",
+                    "id": "eb4de70e-2158-4bfd-9f06-ee56df2332d6",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "Sprint",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3ef1865-0f50-44c8-b8b4-cced8fac636d",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "867c7cc2-c641-4ce3-b95b-063dee6b4710",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09197976-36fe-403f-b53b-5afd6e45778f",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

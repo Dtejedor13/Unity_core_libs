@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Groundcheck")]
     public bool grounded;
-    public float playerheigt = 2f;
+    public float playerHeight = 2f;
     public LayerMask ground;
 
     [Header("Air controll")]
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerheigt * 0.5f + 0.2f, ground);
+        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, ground);
 
         if (grounded)
             rb.drag = groundDrag;
@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        return;
         HandleAirControll();
         HandleMovement();
         HandleRotation();
@@ -83,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleAirControll()
     {
-        if (inputs.JumpButtonIsPressed && redyToJump && grounded)
+        if (inputs.JumpAction && redyToJump && grounded)
         {
             redyToJump = false;
             Jump();
