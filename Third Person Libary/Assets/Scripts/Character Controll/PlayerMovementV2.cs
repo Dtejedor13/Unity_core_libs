@@ -1,3 +1,4 @@
+using Assets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputs))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(IAnimationHandler))]
 public class PlayerMovementV2 : MonoBehaviour
 {
     [Header("Movement")]
@@ -27,7 +29,7 @@ public class PlayerMovementV2 : MonoBehaviour
     [Header("Slope Handling")]
     public float maxSlopeAngle = 40;
 
-    public bool grounded;
+    private bool grounded;
     private bool redayToJump = true;
     private float horizontalInput;
     private float verticalInput;
@@ -36,12 +38,14 @@ public class PlayerMovementV2 : MonoBehaviour
     private RaycastHit slopeHit;
     private Rigidbody rb;
     private TP_InputManager inputs;
+    private IAnimationHandler animHandler;
 
     private void Start()
     {
         inputs = GetComponent<TP_InputManager>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        animHandler = GetComponent<IAnimationHandler>();
     }
 
     private void Update()
@@ -49,7 +53,7 @@ public class PlayerMovementV2 : MonoBehaviour
         // groundcheck
         Vector3 raypoint = transform.position + new Vector3(0, .2f, 0);
         grounded = Physics.Raycast(raypoint, Vector3.down, .5f, whatIsGround);
-        GetComponent<Animator>().SetBool("isGrounded", grounded);
+        animHandler.HandleIsGrounded(grounded);
 
         ReadPlayerInputs();
         SpeedControl();
@@ -79,9 +83,7 @@ public class PlayerMovementV2 : MonoBehaviour
         }
 
         // crouching
-        if (inputs.IsCrouching)
-            Debug.Log("Crouching");
-        GetComponent<Animator>().SetBool("isCrouching", inputs.IsCrouching);
+        animHandler.HandleCrouch(inputs.IsCrouching);
     }
 
     private void MovePlayer()
@@ -100,9 +102,9 @@ public class PlayerMovementV2 : MonoBehaviour
         }
 
         if (grounded) 
-            rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
         else if (!grounded) // in air
-            rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * moveSpeed * 10f* airMultiplier, ForceMode.Force);
     }
 
     private void Jump()
@@ -110,7 +112,7 @@ public class PlayerMovementV2 : MonoBehaviour
         // reset y velocity
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-        GetComponent<Animator>().SetTrigger("jump");
+        animHandler.HandleCrouch(true);
     }
 
     public bool OnSlope()
@@ -150,7 +152,7 @@ public class PlayerMovementV2 : MonoBehaviour
     {
         // mesure current movementspeed
         float movementPerFrame = Vector3.Distance(PreviousFramePosition, transform.position);
-        GetComponent<Animator>().SetFloat("movement speed", movementPerFrame / Time.deltaTime);
+        animHandler.HandleMovementSpeed(movementPerFrame / Time.deltaTime);
         PreviousFramePosition = transform.position;
     }
 }
