@@ -23,7 +23,7 @@ public class TP_InputManager : MonoBehaviour
             playerInputs.Movement.Jump.canceled += x => JumpAction = false;
             playerInputs.Movement.Sprint.performed += x => IsSprinting = true;
             playerInputs.Movement.Sprint.canceled += x => IsSprinting = false;
-            playerInputs.Movement.Crouch.performed += x => IsCrouching = !IsCrouching;
+            playerInputs.Movement.Crouch.performed += x => IsCrouching = x.performed;
         }
 
         playerInputs.Enable();
