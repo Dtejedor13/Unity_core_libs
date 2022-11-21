@@ -5,4 +5,4 @@
 > 2. Extract all folders in /Assets manualy or as unitypackage and import it into ur own game.
 > 3. Enjoy.
 > ## Libs 
-> [RTS (Real Time Strategy) Libary](./RTS Libary/README.md)
+> [RTS (Real Time Strategy) Libary](RTS Libary/README.md)
