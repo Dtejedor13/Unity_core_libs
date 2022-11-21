@@ -4,5 +4,5 @@
 > 1. Download the project and open the library of your choice.
 > 2. Extract all folders in /Assets manualy or as unitypackage and import it into ur own game.
 > 3. Enjoy.
-## Libs 
-- [RTS Libary](RTS Libary/README.md)
+## Content
+- [this subtext](RTS Libary/README.md)
