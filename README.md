@@ -5,7 +5,7 @@
 >2. Extract all folders in /Assets manualy or as unitypackage and import it into ur own game.
 >3. Enjoy.
 ### RTS (Real Time Strategy) Libary
-> => [RTS README](./RTS Libary/README.md)
+[RTS README](./RTS Libary/README.md)
 >##### Content
 >- RTS unit selection (single select and deselect and multiple box selection)
 >- RTS orbit camera system (zoom in and out and move camera in x/y rig across the map)
