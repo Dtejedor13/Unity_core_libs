@@ -3,6 +3,7 @@
 ## How to use
 > 1. Download the project and open the library of your choice.
 > 2. Extract all folders in /Assets manualy or as unitypackage and import it into ur own game.
-> 3. Enjoy.
+> 3. Follow read the library README for usage and setup into your own game.
+> 4. Enjoy.
 ## Content
 - [RTS Libary](RTS%20Libary)
