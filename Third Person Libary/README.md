@@ -1,2 +1,2 @@
-# Third Person Libary
+# Third person libary
 Work in progress
