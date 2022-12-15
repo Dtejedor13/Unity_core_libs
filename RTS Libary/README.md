@@ -1,4 +1,4 @@
-# RTS (Real Time Strategy) Libary
+# RTS (real time strategy) libary
 This library contains basic functionality for rts games.
 ## Content
 - RTS unit selection (single select and deselect also multiple box selection)
