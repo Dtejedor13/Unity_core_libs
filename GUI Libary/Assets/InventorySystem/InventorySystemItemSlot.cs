@@ -4,7 +4,7 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
 {
     public class InventorySystemItemSlot : MonoBehaviour
     {
-        public IInventroryItem Item { get; set; }
+        public IInventroryItem? Item { get; set; } = null;
         public int StackSize { get; set; } = 0;
         public bool SlotIsEmpty
         {
@@ -17,6 +17,7 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
 
             StackSize = 0;
             Destroy(Item.GetGameObject());
+            Item = null;
         }
 
         public void AssignItem(IInventroryItem item, int stackSize)

@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
+using System.Collections.Generic;
 using UnityCoreLibs.GUILibary.InventorySystem;
-using static UnityEditor.Progress;
+using UnityEngine;
 
 public class InventorySystemTests
 {
@@ -14,8 +11,7 @@ public class InventorySystemTests
         var item = new TestInventoryItem(0, 1); 
         var inventory = CreateInventorySystem(1);
         inventory.OnItemAdd += (object sender, IInventroryItem itemThatWasAdded, int stackSize) => {
-            // Assert here
-            Assert.AreEqual(item, itemThatWasAdded);
+            Assert.AreEqual(item.Id, itemThatWasAdded.Id);
         };
         inventory.AddItemToInventory(item);
     }
@@ -27,7 +23,7 @@ public class InventorySystemTests
         var item1 = new TestInventoryItem(0, 1);
         var item2 = new TestInventoryItem(2, 1);
         inventory.OnItemRemove += (object sender, IInventroryItem itemThatWasRemoved, int stackSize) => {
-            Assert.AreEqual(item2, itemThatWasRemoved);
+            Assert.AreEqual(item2.Id, itemThatWasRemoved.Id);
         };
         inventory.AddItemToInventory(item1);
         inventory.AddItemToInventory(item2);
@@ -42,8 +38,7 @@ public class InventorySystemTests
         var item2 = new TestInventoryItem(1, 1);
         var item3 = new TestInventoryItem(2, 1);
         inventory.OnItemAdd += (object sender, IInventroryItem itemThatWasAdded, int stackSize) => {
-            // Assert here
-            Assert.AreNotEqual(item3, itemThatWasAdded);
+            Assert.AreNotEqual(item3.Id, itemThatWasAdded.Id);
         };
         inventory.AddItemToInventory(item1);
         inventory.AddItemToInventory(item2);
@@ -78,7 +73,7 @@ public class InventorySystemTests
     [Test]
     public void TestIfItemCanBeStacked()
     {
-        var inventory = CreateInventorySystem(3);
+        var inventory = CreateInventorySystem(2);
         var item = new TestInventoryItem(0, 10);
         var item2 = new TestInventoryItem(1, 10);
 
@@ -103,6 +98,7 @@ public class InventorySystemTests
 
     private class TestInventoryItem : IInventroryItem
     {
+        public int Id => _id;
         private readonly int _maxStacks;
         private readonly int _id;
         public TestInventoryItem(int id, int maxStacks)
@@ -110,6 +106,7 @@ public class InventorySystemTests
             _id = id;
             _maxStacks = maxStacks;
         }
+
 
         public GameObject GetGameObject()
         {
