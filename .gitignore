@@ -97,3 +97,9 @@ Third Person Libary/*.pidb.meta
 Third Person Libary/*.pdb.meta
 Third Person Libary/*.mdb.meta
 Third Person Libary/Assets/TextMesh Pro/
+*.vsconfig
+GUI Libary/Library/
+GUI Libary/UserSettings/
+GUI Libary/Packages/
+GUI Libary/obj/
+GUI Libary/Logs/
