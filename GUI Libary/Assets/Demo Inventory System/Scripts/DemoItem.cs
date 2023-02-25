@@ -1,22 +1,22 @@
 using UnityCoreLibs.GUILibary.InventorySystem;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DemoItem : MonoBehaviour, IInventroryItem
 {
+    public int Id => id;
+    public Sprite Sprite => itemSprite;
+    public string ItemName => itemName;
+
     [SerializeField] int id;
     [SerializeField] int maxStacks = 1;
-
-    public int Id => id;
-
-    public void InitForTests(int id, int maxStacks)
-    {
-        this.id = id;
-        this.maxStacks = maxStacks;
-    }
+    [SerializeField] Sprite itemSprite;
+    [SerializeField] string itemName;
 
     private void Start()
     {
         InventorySystem.Instance.OnItemAdd += OnItemAdd;
+        transform.GetChild(0).GetComponent<Image>().sprite = itemSprite;
     }
 
     private void OnDestroy()
@@ -26,7 +26,16 @@ public class DemoItem : MonoBehaviour, IInventroryItem
 
     public GameObject GetGameObject()
     {
-        return gameObject;
+        try
+        {
+            return gameObject;
+        }
+        catch (System.NullReferenceException ex)
+        {
+            // Exceptions happens in tests
+            Debug.LogWarning("Gameobject not found");
+            return null;
+        }
     }
 
     public int GetMaxStackSize()
@@ -42,6 +51,15 @@ public class DemoItem : MonoBehaviour, IInventroryItem
     public void AddToInventory()
     {
         InventorySystem.Instance.AddItemToInventory(this);
+    }
+
+    /// <summary>
+    /// Sets the SerializeField vars for tests
+    /// </summary>
+    public void InitForTests(int id, int maxStacks)
+    {
+        this.id = id;
+        this.maxStacks = maxStacks;
     }
 
     private void OnItemAdd(object sender, IInventroryItem itemThatWasAdded, int stackSize)

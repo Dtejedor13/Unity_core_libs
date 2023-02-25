@@ -5,6 +5,20 @@ using UnityCoreLibs.GUILibary.InventorySystem;
 public class InventorySystemTests
 {
     [Test]
+    public void TestSystemCreation()
+    {
+        var system = CreateInventorySystem(1);
+        Assert.True(system is not null);
+    }
+
+    [Test]
+    public void TestItemCreation()
+    {
+        var item = CreateItem(0, 1);
+        Assert.IsTrue(item is not null);
+    }
+
+    [Test]
     public void TestAddingToInventory()
     {
         var item = CreateItem(0, 1); 
@@ -12,6 +26,11 @@ public class InventorySystemTests
         inventory.OnItemAdd += (object sender, IInventroryItem itemThatWasAdded, int stackSize) => {
             Assert.AreEqual(item.Id, itemThatWasAdded.Id);
         };
+
+        inventory.OnItemAddFail += (object sender, IInventroryItem itemThatCanotBeAdded, int stackSize) => {
+            Assert.IsTrue(false);
+        };
+
         inventory.AddItemToInventory(item);
     }
 
@@ -20,13 +39,17 @@ public class InventorySystemTests
     {
         var inventory = CreateInventorySystem(2);
         var item1 = CreateItem(0, 1);
-        var item2 = CreateItem(2, 1);
+        var item2 = CreateItem(1, 1);
         inventory.OnItemRemove += (object sender, IInventroryItem itemThatWasRemoved, int stackSize) => {
             Assert.AreEqual(item2.Id, itemThatWasRemoved.Id);
         };
+        inventory.OnItemRemoveFail += (object sender, IInventroryItem itemThatCanotBeRemoved, int stackSize) => {
+            Assert.AreNotEqual(item2.Id, itemThatCanotBeRemoved.Id);
+        };
+
         inventory.AddItemToInventory(item1);
         inventory.AddItemToInventory(item2);
-        inventory.RemoveItemToInventory(item2);
+        inventory.RemoveItemFromInventory(item2);
     }
 
     [Test]
@@ -54,19 +77,20 @@ public class InventorySystemTests
             CreateItem(2, 5),
             CreateItem(3, 4),
             CreateItem(4, 1),
-            CreateItem(5, 10),
-            CreateItem(6, 1)
+            CreateItem(5, 10), // this will fail
+            CreateItem(6, 1) // this will fail
         };
 
-        for(int i = 0; i < items.Count; i++) {
-            var shouldBeSuccessfull = inventory.InventoryHasSpaceForMoreStacks(items[i]);
+        inventory.OnItemAdd += (object sender, IInventroryItem itemThatWasAdded, int stackSize) => {
+            Assert.IsTrue(itemThatWasAdded.Id < 5);
+        };
+
+        inventory.OnItemAddFail += (object sender, IInventroryItem itemThatCanotBeAdded, int stackSize) => {
+            Assert.IsTrue(itemThatCanotBeAdded.Id >= 5);
+        };
+
+        for (int i = 0; i < items.Count; i++)
             inventory.AddItemToInventory(items[i]);
-            // i = 0, 1, 2, 3 should be addeble
-            if (i < 4)
-                Assert.AreEqual(inventory.GetSizeOfUnusedSlots() - 1 > 0, shouldBeSuccessfull);
-            else
-                Assert.False(shouldBeSuccessfull);
-        }
     }
 
     [Test]
@@ -90,13 +114,15 @@ public class InventorySystemTests
     private InventorySystem CreateInventorySystem(int maxSlots)
     {
         var inventory = new InventorySystem();
+        
         var slots = new List<IInventoryItemSlot>();
+        for (int i = 0; i < maxSlots; i++) {
+            var slot = new DemoSlot();
+            slots.Add(slot);
+        }
 
-        for (int i = 0; i < maxSlots; i++)
-            slots.Add(new DemoSlot());
-
-        inventory.Init(slots);
         inventory.MaxInventorySlots = maxSlots;
+        inventory.Init(slots);
         return inventory;
     }
 

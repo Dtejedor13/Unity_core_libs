@@ -8,8 +8,9 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
         int StackSize { get; }
         bool SlotIsEmpty { get; }
         GameObject GetGameObject();
-        void RemoveItem();
+        void ResetSlot();
         void AssignItem(IInventroryItem item, int stackSize);
-        void SetStackSize(int newValue);
+        void IncreaseStackSize(int value);
+        void DecreaseStackSize(int value);
     }
 }
