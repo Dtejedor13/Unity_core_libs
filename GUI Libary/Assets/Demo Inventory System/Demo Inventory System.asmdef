@@ -1,0 +1,16 @@
+{
+    "name": "DemoInventorySystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a79c05caefc604243bb9015482d4f3c1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

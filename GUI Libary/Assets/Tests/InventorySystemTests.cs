@@ -1,14 +1,13 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityCoreLibs.GUILibary.InventorySystem;
-using UnityEngine;
 
 public class InventorySystemTests
 {
     [Test]
     public void TestAddingToInventory()
     {
-        var item = new TestInventoryItem(0, 1); 
+        var item = CreateItem(0, 1); 
         var inventory = CreateInventorySystem(1);
         inventory.OnItemAdd += (object sender, IInventroryItem itemThatWasAdded, int stackSize) => {
             Assert.AreEqual(item.Id, itemThatWasAdded.Id);
@@ -20,8 +19,8 @@ public class InventorySystemTests
     public void TestRemovingFromInventory()
     {
         var inventory = CreateInventorySystem(2);
-        var item1 = new TestInventoryItem(0, 1);
-        var item2 = new TestInventoryItem(2, 1);
+        var item1 = CreateItem(0, 1);
+        var item2 = CreateItem(2, 1);
         inventory.OnItemRemove += (object sender, IInventroryItem itemThatWasRemoved, int stackSize) => {
             Assert.AreEqual(item2.Id, itemThatWasRemoved.Id);
         };
@@ -34,9 +33,9 @@ public class InventorySystemTests
     public void TestMaximumSizeInventory()
     {
         var inventory = CreateInventorySystem(2);
-        var item1 = new TestInventoryItem(0, 1);
-        var item2 = new TestInventoryItem(1, 1);
-        var item3 = new TestInventoryItem(2, 1);
+        var item1 = CreateItem(0, 1);
+        var item2 = CreateItem(1, 1);
+        var item3 = CreateItem(2, 1);
         inventory.OnItemAdd += (object sender, IInventroryItem itemThatWasAdded, int stackSize) => {
             Assert.AreNotEqual(item3.Id, itemThatWasAdded.Id);
         };
@@ -49,14 +48,14 @@ public class InventorySystemTests
     public void TestIfInventoryDetectEmptySlots()
     {
         var inventory = CreateInventorySystem(5);
-        var items = new List<TestInventoryItem> {
-            new TestInventoryItem(0, 1),
-            new TestInventoryItem(1, 10),
-            new TestInventoryItem(2, 5),
-            new TestInventoryItem(3, 4),
-            new TestInventoryItem(4, 1),
-            new TestInventoryItem(5, 10),
-            new TestInventoryItem(6, 1)
+        var items = new List<IInventroryItem> {
+            CreateItem(0, 1),
+            CreateItem(1, 10),
+            CreateItem(2, 5),
+            CreateItem(3, 4),
+            CreateItem(4, 1),
+            CreateItem(5, 10),
+            CreateItem(6, 1)
         };
 
         for(int i = 0; i < items.Count; i++) {
@@ -74,8 +73,8 @@ public class InventorySystemTests
     public void TestIfItemCanBeStacked()
     {
         var inventory = CreateInventorySystem(2);
-        var item = new TestInventoryItem(0, 10);
-        var item2 = new TestInventoryItem(1, 10);
+        var item = CreateItem(0, 10);
+        var item2 = CreateItem(1, 10);
 
         inventory.AddItemToInventory(item, 2);
         inventory.AddItemToInventory(item2, 2);
@@ -90,37 +89,21 @@ public class InventorySystemTests
 
     private InventorySystem CreateInventorySystem(int maxSlots)
     {
-        InventorySystem inventory = new InventorySystem();
-        inventory.Init();
+        var inventory = new InventorySystem();
+        var slots = new List<IInventoryItemSlot>();
+
+        for (int i = 0; i < maxSlots; i++)
+            slots.Add(new DemoSlot());
+
+        inventory.Init(slots);
         inventory.MaxInventorySlots = maxSlots;
         return inventory;
     }
 
-    private class TestInventoryItem : IInventroryItem
+    private IInventroryItem CreateItem(int id, int maxStacks)
     {
-        public int Id => _id;
-        private readonly int _maxStacks;
-        private readonly int _id;
-        public TestInventoryItem(int id, int maxStacks)
-        {
-            _id = id;
-            _maxStacks = maxStacks;
-        }
-
-
-        public GameObject GetGameObject()
-        {
-            return null;
-        }
-
-        public int GetMaxStackSize()
-        {
-            return _maxStacks;
-        }
-
-        public bool ItemIsStackeble()
-        {
-            return _maxStacks > 1;
-        }
+        var item = new DemoItem();
+        item.InitForTests(id, maxStacks);
+        return item;
     }
 }
