@@ -8,7 +8,7 @@ More libs are comming and current are still in development.
 2. Extract all folders in **/Assets/Export** manualy or as unitypackage and import it into ur own game.
 3. Read the library README for usage and setup into your own game.
 4. develop further.
-## Content 
+## Libaries
 - [RTS Libary](RTS%20Libary)
 - [Third Person](Third%20Person%20Libary)
 - [GUI Libary](GUI%20Libary)
