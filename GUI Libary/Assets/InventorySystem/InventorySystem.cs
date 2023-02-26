@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -45,8 +46,10 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
         {
             _instance = this;
             var spawnedItems = new List<IInventoryItemSlot>();
-            if (inventorySlotPrefab != null) {
-                for (int i = 0; i < MaxInventorySlots; i++) {
+            if (inventorySlotPrefab != null)
+            {
+                for (int i = 0; i < MaxInventorySlots; i++)
+                {
                     // spawn prefab slots in inventory object
                     var go = Instantiate(inventorySlotPrefab, itemsTransform);
                     if (go.TryGetComponent(out IInventoryItemSlot slot))
@@ -60,7 +63,7 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
 
         public void Init(List<IInventoryItemSlot> initSlots)
         {
-            foreach(IInventoryItemSlot initSlot in initSlots)
+            foreach (IInventoryItemSlot initSlot in initSlots)
                 _itemSlots.Add(initSlot);
         }
 
@@ -73,14 +76,18 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
         public void AddItemToInventory(IInventroryItem item, int stackSize = 1)
         {
             var success = false;
-            if (InventoryHasSpaceForMoreStacks(item, stackSize)) {
+            if (InventoryHasSpaceForMoreStacks(item, stackSize))
+            {
                 var existingSameItems = _itemSlots.Where(x => x.SlotIsEmpty == false && x.Item.Id == item.Id);
 
                 // try to add more stacks
-                if (existingSameItems.Any()) {
+                if (existingSameItems.Any())
+                {
                     // try stacking on existing stacks
-                    foreach (var slot in existingSameItems) {
-                        if (slot.Item.GetMaxStackSize() >= stackSize + slot.StackSize) {
+                    foreach (var slot in existingSameItems)
+                    {
+                        if (slot.Item.GetMaxStackSize() >= stackSize + slot.StackSize)
+                        {
                             slot.IncreaseStackSize(stackSize);
                             success = true;
                         }
@@ -90,7 +97,8 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
             else if (InventoryHasEmptySpace())
                 success = SearchForEmptySlotAndAssignItem(item, stackSize);
 
-            if (success) {
+            if (success)
+            {
                 ReOrgenizeInventory();
                 OnItemAdd?.Invoke(this, item, stackSize);
             }
@@ -109,7 +117,8 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
             if (slots is not null && slots.Count() > 0)
             {
                 foreach (var slot in slots)
-                    if (slot.StackSize >= stackSize) {
+                    if (slot.StackSize >= stackSize)
+                    {
                         // ToDo: what do i do when stackSize to remove is greater then the current stackSize?
                         slot.DecreaseStackSize(stackSize);
                         if (slot.StackSize <= 0)
@@ -132,6 +141,14 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
         }
 
         /// <summary>
+        /// Get the slot with given index
+        /// </summary>
+        public IInventoryItemSlot GetInventorySlotByIndex(int index)
+        {
+            return _itemSlots[index];
+        }
+
+        /// <summary>
         /// Checks if stacks of the item can be added to the inventory
         /// </summary>
         /// <param name="item">Item to add</param>
@@ -139,8 +156,10 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
         public bool InventoryHasSpaceForMoreStacks(IInventroryItem item, int stacksize = 1)
         {
             var slot = _itemSlots.Where(x => x.SlotIsEmpty == false).FirstOrDefault(x => x.Item.Id == item.Id);
-            if (slot != null) {
-                if (slot.Item.ItemIsStackeble()) {
+            if (slot != null)
+            {
+                if (slot.Item.ItemIsStackeble())
+                {
                     // item was found and is stackeble
                     var afterInsertStackSize = slot.StackSize + stacksize;
                     return afterInsertStackSize <= slot.Item.GetMaxStackSize();
@@ -159,8 +178,10 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
         private bool SearchForEmptySlotAndAssignItem(IInventroryItem item, int stackSize)
         {
             // search of empty slot and insert item
-            foreach (var slot in _itemSlots) {
-                if (slot.SlotIsEmpty) {
+            foreach (var slot in _itemSlots)
+            {
+                if (slot.SlotIsEmpty)
+                {
                     slot.AssignItem(item, stackSize);
                     return true;
                 }
@@ -173,20 +194,25 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
         private void ReOrgenizeInventory()
         {
             // sort stacks
-            for (int i = 0; i < _itemSlots.Count; i++) {
+            for (int i = 0; i < _itemSlots.Count; i++)
+            {
                 if (_itemSlots[i].SlotIsEmpty == false) continue;
-                for (int j = i + 1; j < _itemSlots.Count; j++) {
-                    if (_itemSlots[i].SlotIsEmpty == false) {
+                for (int j = i + 1; j < _itemSlots.Count; j++)
+                {
+                    if (_itemSlots[i].SlotIsEmpty == false)
+                    {
                         // fill out stacks
                         var stacksToFill = _itemSlots[i].Item.GetMaxStackSize() - _itemSlots[i].StackSize;
                         if (stacksToFill <= 0) continue;
 
-                        if (_itemSlots[j].StackSize >= stacksToFill) {
+                        if (_itemSlots[j].StackSize >= stacksToFill)
+                        {
                             // sibling has enogh stacks to transfer them
                             _itemSlots[i].IncreaseStackSize(stacksToFill);
                             _itemSlots[j].DecreaseStackSize(stacksToFill);
                         }
-                        else {
+                        else
+                        {
                             // sibling dont have enogh stacks, transfer the possible amount
                             _itemSlots[i].IncreaseStackSize(_itemSlots[j].StackSize);
                             _itemSlots[j].DecreaseStackSize(_itemSlots[j].StackSize);
@@ -196,18 +222,22 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
 
             }
 
-            // reorder
-            for(int i = 0; i < _itemSlots.Count; i++) {
-                if (_itemSlots[i].SlotIsEmpty == false) continue;
-                for (int j = i + 1; j < _itemSlots.Count; j++) {
-                    if (_itemSlots[i].SlotIsEmpty == false) {
-                        // swap
-                        var tempItem = _itemSlots[j].Item;
-                        var tempStacks = _itemSlots[j].StackSize;
-                        _itemSlots[j].ResetSlot();
-                        _itemSlots[i].AssignItem(tempItem, tempStacks);
-                        continue;
-                    }   
+            // reorder // Works!
+            for (int i = 0; i < _itemSlots.Count; i++)
+            {
+                if (_itemSlots[i].SlotIsEmpty)
+                {
+                    // search for a non empty slot
+                    for (int j = i + 1; j < _itemSlots.Count; j++)
+                    {
+                        if (_itemSlots[j].SlotIsEmpty == false)
+                        {
+                            // swap slots
+                            _itemSlots[i].AssignItem(_itemSlots[j].Item, _itemSlots[j].StackSize);
+                            _itemSlots[j].ResetSlot();
+                            break;
+                        }
+                    }
                 }
             }
         }

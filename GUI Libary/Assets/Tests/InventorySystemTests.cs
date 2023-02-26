@@ -111,6 +111,21 @@ public class InventorySystemTests
         Assert.False(shouldBePossible);
     }
 
+    [Test]
+    public void TestRestacking()
+    {
+        var inventory = CreateInventorySystem(2);
+        var items = new List<IInventroryItem> { CreateItem(0, 10), CreateItem(1, 2), CreateItem(0, 10) };
+        var insertedStacks = 1;
+        
+        foreach(var item in items)
+            inventory.AddItemToInventory(item, insertedStacks);
+
+        Assert.True(inventory.GetInventorySlotByIndex(1).Item  is not null);
+        Assert.True(inventory.GetInventorySlotByIndex(0).Item is not null);
+        Assert.AreEqual(inventory.GetInventorySlotByIndex(0).StackSize, insertedStacks * 2);
+    }
+
     private InventorySystem CreateInventorySystem(int maxSlots)
     {
         var inventory = new InventorySystem();
