@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -222,7 +221,7 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
 
             }
 
-            // reorder // Works!
+            // reorder items
             for (int i = 0; i < _itemSlots.Count; i++)
             {
                 if (_itemSlots[i].SlotIsEmpty)

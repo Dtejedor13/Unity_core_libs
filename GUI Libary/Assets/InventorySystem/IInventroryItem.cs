@@ -10,5 +10,6 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
         bool ItemIsStackeble();
         int GetMaxStackSize();
         GameObject GetGameObject();
+        void CopyPropsFromItem(IInventroryItem item, int stacks);
     }
 }

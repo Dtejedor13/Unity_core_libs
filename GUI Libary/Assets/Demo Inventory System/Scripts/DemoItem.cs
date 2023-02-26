@@ -1,3 +1,4 @@
+using TMPro;
 using UnityCoreLibs.GUILibary.InventorySystem;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,18 +6,23 @@ using UnityEngine.UI;
 public class DemoItem : MonoBehaviour, IInventroryItem
 {
     public int Id => id;
-    public Sprite Sprite => itemSprite;
+    public Sprite Sprite => sprite;
     public string ItemName => itemName;
 
+    [SerializeField] Sprite sprite;
     [SerializeField] int id;
-    [SerializeField] int maxStacks = 1;
-    [SerializeField] Sprite itemSprite;
     [SerializeField] string itemName;
+    [SerializeField] int maxStacks = 1;
+    [SerializeField] int stacks = 1;
+    [SerializeField] TextMeshProUGUI stackInfo;
+    [SerializeField] Image itemSpriteImage;
 
+    // Do not use Awake() for this, because the InventorySystem is not initialized yet
     private void Start()
     {
         InventorySystem.Instance.OnItemAdd += OnItemAdd;
-        transform.GetChild(0).GetComponent<Image>().sprite = itemSprite;
+        itemSpriteImage.sprite = Sprite;
+        stackInfo.text = $"{stacks}x";
     }
 
     private void OnDestroy()
@@ -48,6 +54,18 @@ public class DemoItem : MonoBehaviour, IInventroryItem
         return maxStacks > 1;
     }
 
+    public void CopyPropsFromItem(IInventroryItem item, int stacks)
+    {
+        this.id = item.Id;
+        this.maxStacks = item.GetMaxStackSize();
+        this.stacks = stacks;
+        this.sprite = item.Sprite;
+        this.itemName = item.ItemName;
+        itemSpriteImage.sprite = Sprite;
+        stackInfo.text = $"{stacks}x";
+    }
+
+    // button event
     public void AddToInventory()
     {
         InventorySystem.Instance.AddItemToInventory(this);
@@ -64,7 +82,8 @@ public class DemoItem : MonoBehaviour, IInventroryItem
 
     private void OnItemAdd(object sender, IInventroryItem itemThatWasAdded, int stackSize)
     {
-        if (itemThatWasAdded.Id == this.id) {
+        if (itemThatWasAdded.Id == this.Id)
+        {
             Destroy(gameObject);
         }
     }
