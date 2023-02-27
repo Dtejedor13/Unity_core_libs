@@ -19,4 +19,3 @@ Assets/InventorySystem/
 <br/>The Inventory system will spawn depending on his configuration slots from the given prefab that implement the slot interface.
 <br/>They are [Demo](Assets/Demos/Demo%20Inventory%20System) as example for the implementation that can be used if needed.
 <br/>Please notice that this system is only a base to start with, depending on the system more props and methods will be needed.
-<br/>Enjoy!
