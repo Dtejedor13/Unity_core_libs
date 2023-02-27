@@ -10,9 +10,9 @@ The needed files for the inventory system are as follows:
 - IInventoryItemSlot.cs (Interface)
 - IInventroryItem.cs (Interface)
 U can find them under following path:
-´´´
-´´´
+````
+```
 Assets/InventorySystem/
 ´´´
-´´´
+´´´´
 After the import to your project 
