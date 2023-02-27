@@ -57,11 +57,6 @@ public class DemoSlot : MonoBehaviour, IInventoryItemSlot
         SetImageSprite(item.Sprite);
     }
 
-    public GameObject GetGameObject()
-    {
-        return gameObject;
-    }
-
     public void IncreaseStackSize(int value)
     {
         if (SlotIsEmpty) return;
