@@ -195,10 +195,11 @@ namespace UnityCoreLibs.GUILibary.InventorySystem
             // sort stacks
             for (int i = 0; i < _itemSlots.Count; i++)
             {
-                if (_itemSlots[i].SlotIsEmpty == false) continue;
+                if (_itemSlots[i].SlotIsEmpty) continue;
+
                 for (int j = i + 1; j < _itemSlots.Count; j++)
                 {
-                    if (_itemSlots[i].SlotIsEmpty == false)
+                    if (_itemSlots[j].SlotIsEmpty == false && _itemSlots[i].Item.Id == _itemSlots[j].Item.Id)
                     {
                         // fill out stacks
                         var stacksToFill = _itemSlots[i].Item.GetMaxStackSize() - _itemSlots[i].StackSize;

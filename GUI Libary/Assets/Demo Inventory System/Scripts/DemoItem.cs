@@ -72,7 +72,7 @@ public class DemoItem : MonoBehaviour, IInventroryItem
     }
 
     /// <summary>
-    /// Sets the SerializeField vars for tests
+    /// Sets the SerializeField props for testing
     /// </summary>
     public void InitForTests(int id, int maxStacks)
     {
@@ -82,7 +82,7 @@ public class DemoItem : MonoBehaviour, IInventroryItem
 
     private void OnItemAdd(object sender, IInventroryItem itemThatWasAdded, int stackSize)
     {
-        if (itemThatWasAdded.Id == this.Id)
+        if (itemThatWasAdded.GetGameObject() == gameObject)
         {
             Destroy(gameObject);
         }

@@ -3,22 +3,20 @@ using TMPro;
 using UnityCoreLibs.GUILibary.InventorySystem;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class DemoSlot : MonoBehaviour, IInventoryItemSlot
 {
     public IInventroryItem? Item => _item;
     public int StackSize => _stackSize;
-
-    private IInventroryItem? _item = null;
-    private int _stackSize = 0;
-
     public bool SlotIsEmpty
     {
         get { return Item == null; }
     }
 
     [SerializeField] TextMeshProUGUI stackInfo;
+
+    private IInventroryItem? _item = null;
+    private int _stackSize = 0;
 
     private void Awake()
     {
@@ -30,6 +28,15 @@ public class DemoSlot : MonoBehaviour, IInventoryItemSlot
         // enable or disable buttons
         transform.GetChild(1).gameObject.SetActive(SlotIsEmpty == false);
         transform.GetChild(2).gameObject.SetActive(SlotIsEmpty == false);
+
+        if (stackInfo is not null)
+        {
+            // display the stack info
+            if (SlotIsEmpty)
+                stackInfo.text = string.Empty;
+            else
+                stackInfo.text = $"{_stackSize}x";
+        }
     }
 
     public void ResetSlot()
@@ -38,7 +45,6 @@ public class DemoSlot : MonoBehaviour, IInventoryItemSlot
         
         _item = null;
         _stackSize = 0;
-        stackInfo.text = string.Empty;
         SetImageSprite(null);
     }
 
@@ -47,7 +53,6 @@ public class DemoSlot : MonoBehaviour, IInventoryItemSlot
         if (!SlotIsEmpty) return;
 
         _item = item;
-        stackInfo.text = $"{stackSize}x";
         _stackSize = stackSize;
         SetImageSprite(item.Sprite);
     }
@@ -77,7 +82,8 @@ public class DemoSlot : MonoBehaviour, IInventoryItemSlot
     {
         if (SlotIsEmpty) return;
 
-        InventorySystem.Instance.RemoveItemFromInventory(Item, StackSize);
+        var stacksToDrop = 1;
+        InventorySystem.Instance.RemoveItemFromInventory(Item, stacksToDrop);
     }
 
     public void InspectItem()
